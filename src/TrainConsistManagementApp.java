@@ -1,27 +1,42 @@
-import java.util.regex.*;
+import java.util.*;
+
+class GoodsBogie {
+    private String shape;
+    private String cargo;
+
+    public GoodsBogie(String shape, String cargo) {
+        this.shape = shape;
+        this.cargo = cargo;
+    }
+
+    public String getShape() {
+        return shape;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    @Override
+    public String toString() {
+        return shape + " Bogie carrying " + cargo;
+    }
+}
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
-        String trainId1 = "TRN-1234";
-        String trainId2 = "TRAIN12";
-        String cargoCode1 = "PET-AB";
-        String cargoCode2 = "PET-ab";
+        List<GoodsBogie> goodsBogies = new ArrayList<>();
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsBogies.add(new GoodsBogie("Rectangular", "Coal"));
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Coal")); // invalid case
 
-        Pattern trainIdPattern = Pattern.compile("TRN-\\d{4}");
-        Pattern cargoCodePattern = Pattern.compile("PET-[A-Z]{2}");
+        boolean isSafe = goodsBogies.stream()
+                .allMatch(b -> !(b.getShape().equals("Cylindrical") && !b.getCargo().equals("Petroleum")));
 
-        validateInput("Train ID", trainId1, trainIdPattern);
-        validateInput("Train ID", trainId2, trainIdPattern);
-        validateInput("Cargo Code", cargoCode1, cargoCodePattern);
-        validateInput("Cargo Code", cargoCode2, cargoCodePattern);
-    }
-
-    private static void validateInput(String label, String input, Pattern pattern) {
-        Matcher matcher = pattern.matcher(input);
-        if (matcher.matches()) {
-            System.out.println(label + " \"" + input + "\" is VALID");
-        } else {
-            System.out.println(label + " \"" + input + "\" is INVALID");
+        System.out.println("Goods Bogies Safety Compliance Check:");
+        for (GoodsBogie b : goodsBogies) {
+            System.out.println(" - " + b);
         }
+        System.out.println("Train Safety Status: " + (isSafe ? "SAFE" : "UNSAFE"));
     }
 }
