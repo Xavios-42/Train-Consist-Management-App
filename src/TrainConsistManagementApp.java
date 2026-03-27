@@ -1,49 +1,27 @@
-import java.util.*;
-import java.util.stream.Collectors;
-
-class Bogie {
-    private String type;
-    private String name;
-    private int capacity;
-
-    public Bogie(String type, String name, int capacity) {
-        this.type = type;
-        this.name = name;
-        this.capacity = capacity;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    @Override
-    public String toString() {
-        return name + " (" + type + ") - Capacity: " + capacity;
-    }
-}
+import java.util.regex.*;
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Passenger", "Sleeper", 72));
-        bogies.add(new Bogie("Passenger", "AC Chair", 56));
-        bogies.add(new Bogie("Passenger", "First Class", 24));
-        bogies.add(new Bogie("Goods", "Rectangular", 100));
-        bogies.add(new Bogie("Goods", "Cylindrical", 80));
+        String trainId1 = "TRN-1234";
+        String trainId2 = "TRAIN12";
+        String cargoCode1 = "PET-AB";
+        String cargoCode2 = "PET-ab";
 
-        int totalSeats = bogies.stream()
-                .filter(b -> b.getType().equals("Passenger"))
-                .map(Bogie::getCapacity)
-                .reduce(0, Integer::sum);
+        Pattern trainIdPattern = Pattern.compile("TRN-\\d{4}");
+        Pattern cargoCodePattern = Pattern.compile("PET-[A-Z]{2}");
 
-        System.out.println("Total Seating Capacity in Train: " + totalSeats);
+        validateInput("Train ID", trainId1, trainIdPattern);
+        validateInput("Train ID", trainId2, trainIdPattern);
+        validateInput("Cargo Code", cargoCode1, cargoCodePattern);
+        validateInput("Cargo Code", cargoCode2, cargoCodePattern);
+    }
+
+    private static void validateInput(String label, String input, Pattern pattern) {
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.matches()) {
+            System.out.println(label + " \"" + input + "\" is VALID");
+        } else {
+            System.out.println(label + " \"" + input + "\" is INVALID");
+        }
     }
 }
