@@ -2,20 +2,30 @@ import java.util.Arrays;
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
-        String[] bogieIDs = {"BG309","BG101","BG550","BG205","BG412"};
+        String[] bogieIDs = {};
 
-        Arrays.sort(bogieIDs);
+        try {
+            binarySearch(bogieIDs, "BG101");
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
-        System.out.println("Sorted Bogie IDs:");
-        System.out.println(Arrays.toString(bogieIDs));
+        String[] validBogieIDs = {"BG101","BG205","BG309","BG412","BG550"};
+        Arrays.sort(validBogieIDs);
 
-        binarySearch(bogieIDs, "BG309");
-        binarySearch(bogieIDs, "BG999");
-        binarySearch(bogieIDs, "BG101");
-        binarySearch(bogieIDs, "BG550");
+        try {
+            binarySearch(validBogieIDs, "BG205");
+            binarySearch(validBogieIDs, "BG999");
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     public static void binarySearch(String[] arr, String key) {
+        if (arr == null || arr.length == 0) {
+            throw new IllegalStateException("Cannot perform search: No bogies available in the train.");
+        }
+
         int low = 0;
         int high = arr.length - 1;
         boolean found = false;
