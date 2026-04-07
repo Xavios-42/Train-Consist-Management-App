@@ -1,23 +1,40 @@
+import java.util.Arrays;
+
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
-        String[] bogieIDs = {"BG101","BG205","BG309","BG412","BG550"};
+        String[] bogieIDs = {"BG309","BG101","BG550","BG205","BG412"};
 
-        String searchKey1 = "BG309";
-        String searchKey2 = "BG999";
+        Arrays.sort(bogieIDs);
 
-        linearSearch(bogieIDs, searchKey1);
-        linearSearch(bogieIDs, searchKey2);
+        System.out.println("Sorted Bogie IDs:");
+        System.out.println(Arrays.toString(bogieIDs));
+
+        binarySearch(bogieIDs, "BG309");
+        binarySearch(bogieIDs, "BG999");
+        binarySearch(bogieIDs, "BG101");
+        binarySearch(bogieIDs, "BG550");
     }
 
-    public static void linearSearch(String[] arr, String key) {
+    public static void binarySearch(String[] arr, String key) {
+        int low = 0;
+        int high = arr.length - 1;
         boolean found = false;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i].equals(key)) {
-                System.out.println("Bogie ID " + key + " found at position " + i);
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int comparison = key.compareTo(arr[mid]);
+
+            if (comparison == 0) {
+                System.out.println("Bogie ID " + key + " found at position " + mid);
                 found = true;
                 break;
+            } else if (comparison < 0) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
+
         if (!found) {
             System.out.println("Bogie ID " + key + " not found in the list.");
         }
